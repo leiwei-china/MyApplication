@@ -1,10 +1,11 @@
 apply plugin: 'com.android.library'
 
+apply plugin: 'com.novoda.bintray-release'
 //tasks.withType(JavaCompile) {
 //    options.encoding = 'UTF-8'
 //}
 //
-apply plugin: 'maven'
+//apply plugin: 'maven'
 ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!下面AAR的文件名改成你放到libs文件夹里的文件名
 //def coreAarFile = file('libs/LiteAVSDK_TRTC_6.9.8321.aar')
 //def coreAarFile1 = file('libs/AliRTCSdk.aar')
@@ -48,28 +49,39 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
     //直播业务功能
-//    api 'com.tencent.livesdk:livesdk:1.1.4'
+    api 'com.tencent.livesdk:livesdk:1.1.4'
 //    //核心功能
 ////    compile 'com.tencent.ilivesdk:ilivesdk:1.8.5.5'
 ////    api 'com.tencent.ilivesdk:ilivesdk:1.8.6'
-//    api 'com.tencent.ilivesdk:ilivesdk:1.9.6'
+    api 'com.tencent.ilivesdk:ilivesdk:1.9.6'
 //
-//    api (name:'AliRTCSdk',ext:'aar')
-//
-//    api (name:'LiteAVSDK_TRTC_6.9.8321',ext:'aar')
+    api (name:'AliRTCSdk',ext:'aar')
+
+    api (name:'LiteAVSDK_TRTC_6.9.8321',ext:'aar')
 }
 
-uploadArchives {
-    repositories.mavenDeployer {
-        def mavenDirPath = file('F:\\mavendir') // 本地存放目录(自行选择)，可放在gradle.properties文件中引用
-        repository(url:"file://${mavenDirPath.absolutePath}") // 必须双引号，单引号不会转义$
-        pom.project {
-            groupId "com.example.maven.test" // 可以随意取，一般取包名
-            artifactId "meaventest" // 可以随意取，一般取库的名字
-            version "1.0.1" // 版本号
-        }
-    }
+//a675b1900f0ad11521dbbf405c71e22f54d4db84  appkey  -PbintrayUser=“输入你的用户名”
+publish {
+    userOrg = 'zhangleiwei'                 //bintray.com用户名
+    groupId = 'com.example.maventest'             //jcenter上的路径
+    artifactId = 'maven'        //项目名称
+    publishVersion = '1.0.0'          //版本号
+    desc = 'sdk库'
+    website = 'https://github.com'
 }
+
+
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        def mavenDirPath = file('F:\\mavendir') // 本地存放目录(自行选择)，可放在gradle.properties文件中引用
+//        repository(url:"file://${mavenDirPath.absolutePath}") // 必须双引号，单引号不会转义$
+//        pom.project {
+//            groupId "com.example.maven.test" // 可以随意取，一般取包名
+//            artifactId "meaventest" // 可以随意取，一般取库的名字
+//            version "1.0.1" // 版本号
+//        }
+//    }
+//}
 //uploadArchives {
 //    repositories {
 //        mavenDeployer {
