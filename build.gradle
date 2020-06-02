@@ -60,6 +60,12 @@ allprojects {
 //        }
 //    }
 }
+//直播业务功能
+//api 'com.tencent.livesdk:livesdk:1.1.4'
+//api 'com.tencent.ilivesdk:ilivesdk:1.9.6'    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
+//api group: 'com.tencent.livesdk', name: 'livesdk', version: '1.1.4', transitive: true
+//api group: 'com.tencent.ilivesdk', name: 'ilivesdk', version: '1.9.6', transitive: true
+//api group: 'com.tencent.liteav', name: 'LiteAVSDK_TRTC', version: 'latest.release', transitive: true
 
 task clean(type: Delete) {
     delete rootProject.buildDir
