@@ -8,25 +8,25 @@ def siteUrl = 'https://github.com/leiwei-china/MyApplication'   // 项目的主�
 def gitUrl = 'https://github.com/leiwei-china/MyApplication.git'   // Git仓库的url
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-version = "1.0.3" //发布版本号
+version = "1.0.4" //发布版本号
 group = "com.piano" //最终引用形式，如compile 'com.piano.demolib:1.0.0'，其中demolib在后面配置
 
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
-//apply plugin: 'com.novoda.bintray-release'
-//tasks.withType(JavaCompile) {
-//    options.encoding = 'UTF-8'
-//}
-//
+apply plugin: 'com.novoda.bintray-release'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 //apply plugin: 'maven'
-////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!下面AAR的文件名改成你放到libs文件夹里的文件名
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!下面AAR的文件名改成你放到libs文件夹里的文件名
 //def coreAarFile = file('libs/LiteAVSDK_TRTC_6.9.8321.aar')
-//def coreAarFile1 = file('libs/AliRTCSdk.aar')
-//
-//artifacts {
-////    archives coreAarFile
-//    archives coreAarFile1
-//}
+def coreAarFile1 = file('libs/AliRTCSdk.aar')
+
+artifacts {
+//    archives coreAarFile
+    archives coreAarFile1
+}
 
 android {
     compileSdkVersion 29
@@ -81,16 +81,16 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
     //直播业务功能
-    api 'com.tencent.livesdk:livesdk:1.1.4'
+    compile 'com.tencent.livesdk:livesdk:1.1.4'
 ////    //核心功能
 //////    compile 'com.tencent.ilivesdk:ilivesdk:1.8.5.5'
 //////    api 'com.tencent.ilivesdk:ilivesdk:1.8.6'
-    api 'com.tencent.ilivesdk:ilivesdk:1.9.6'
+    compile 'com.tencent.ilivesdk:ilivesdk:1.9.6'
 ////
-    api (name:'AliRTCSdk',ext:'aar')
+    compile (name:'AliRTCSdk',ext:'aar')
 
 //    api (name:'LiteAVSDK_TRTC_6.9.8321',ext:'aar')
-    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
+    compile 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
 }
 
 //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓Jcenter第二部分，复制就可以，有注释的地方替换为你的内容↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
@@ -107,10 +107,10 @@ bintray {
         userOrg = 'zhangleiwei' //自己创建的organization名称，一定要全是小写字母，即使当时创建的名称含有大写，这里全部转换为小写，否则404
         publish = true // 是否是公开项目，公开别人可以引用
         version {
-            name = '1.0.3'
+            name = '1.0.4'
             desc = '一个小小的demo'//描述，自己定义
             released  = new Date()
-            vcsTag = 'v1.0.3'
+            vcsTag = 'v1.0.4'
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }
