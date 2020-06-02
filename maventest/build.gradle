@@ -8,7 +8,7 @@ def siteUrl = 'https://github.com/leiwei-china/MyApplication'   // 项目的主�
 def gitUrl = 'https://github.com/leiwei-china/MyApplication.git'   // Git仓库的url
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-version = "1.0.1" //发布版本号
+version = "1.0.2" //发布版本号
 group = "com.piano" //最终引用形式，如compile 'com.piano.demolib:1.0.0'，其中demolib在后面配置
 
 //↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
@@ -103,10 +103,10 @@ bintray {
         userOrg = 'zhangleiwei' //自己创建的organization名称，一定要全是小写字母，即使当时创建的名称含有大写，这里全部转换为小写，否则404
         publish = true // 是否是公开项目，公开别人可以引用
         version {
-            name = '1.0.1'
+            name = '1.0.2'
             desc = '一个小小的demo'//描述，自己定义
             released  = new Date()
-            vcsTag = 'v1.0.1'
+            vcsTag = 'v1.0.2'
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }
