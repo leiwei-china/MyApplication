@@ -1,6 +1,19 @@
 apply plugin: 'com.android.library'
 
-apply plugin: 'com.novoda.bintray-release'
+//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓Jcenter第一部分，复制就可以，有注释的地方替换为你的内容↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+def siteUrl = 'https://github.com/leiwei-china/MyApplication'   // 项目的主页
+def gitUrl = 'https://github.com/leiwei-china/MyApplication.git'   // Git仓库的url
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+version = "1.0.1" //发布版本号
+group = "com.piano" //最终引用形式，如compile 'com.piano.demolib:1.0.0'，其中demolib在后面配置
+
+//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
+//apply plugin: 'com.novoda.bintray-release'
 //tasks.withType(JavaCompile) {
 //    options.encoding = 'UTF-8'
 //}
@@ -35,13 +48,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-}
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['/libs']
+        }
+    }
 
-repositories {
-    flatDir {
-        dirs 'libs' //就是你放aar的目录地址
+    packagingOptions {
+        pickFirst "**/libc++_shared.so"
+    }
+
+    lintOptions { // 新增
+        abortOnError false
+        checkReleaseBuilds false // 打包Release版本的时候也不进行Lint检测
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs' //就是你放aar的目录地址
+        }
     }
 }
+
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -50,25 +79,124 @@ dependencies {
 
     //直播业务功能
     api 'com.tencent.livesdk:livesdk:1.1.4'
-//    //核心功能
-////    compile 'com.tencent.ilivesdk:ilivesdk:1.8.5.5'
-////    api 'com.tencent.ilivesdk:ilivesdk:1.8.6'
+////    //核心功能
+//////    compile 'com.tencent.ilivesdk:ilivesdk:1.8.5.5'
+//////    api 'com.tencent.ilivesdk:ilivesdk:1.8.6'
     api 'com.tencent.ilivesdk:ilivesdk:1.9.6'
-//
+////
     api (name:'AliRTCSdk',ext:'aar')
 
     api (name:'LiteAVSDK_TRTC_6.9.8321',ext:'aar')
 }
 
-//a675b1900f0ad11521dbbf405c71e22f54d4db84  appkey  -PbintrayUser=“输入你的用户名”
-publish {
-    userOrg = 'zhangleiwei'                 //bintray.com用户名
-    groupId = 'com.example.maventest'             //jcenter上的路径
-    artifactId = 'maven'        //项目名称
-    publishVersion = '1.0.0'          //版本号
-    desc = 'sdk库'
-    website = 'https://github.com'
+//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓Jcenter第二部分，复制就可以，有注释的地方替换为你的内容↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    pkg {
+        repo = 'MyApplication'//自己创建的仓库名字
+        name = 'maventest'//上传到JCenter的名字,最终引用的名字 compile 'com.piano.demolib:1.0.0'
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ['Apache-2.0']//不能随便写，只能是仓库创建时选择的license type
+        userOrg = 'zhangleiwei' //自己创建的organization名称，一定要全是小写字母，即使当时创建的名称含有大写，这里全部转换为小写，否则404
+        publish = true // 是否是公开项目，公开别人可以引用
+        version {
+            name = '1.0.1'
+            desc = '一个小小的demo'//描述，自己定义
+            released  = new Date()
+            vcsTag = 'v1.0.1'
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+        }
+    }
+    configurations = ['archives']
 }
+
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'maventest'
+                description '小小的demo'
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'Apache-2.0' //和之前自己定义的协议一致
+                        url 'https://raw.githubusercontent.com/minggo620/Pluto-Android/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'zhangleiwei'        //填写bintray或者github的用户名
+                        name 'leiwei'         //姓名
+                        email 'zhangleiwei0815@gmail.com'//邮箱
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    failOnError false //必须添加以免出错
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+javadoc {
+    options{
+        //如果你的项目里面有中文注释的话，必须将格式设置为UTF-8，不然会出现乱码
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+}
+//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
+
+//a675b1900f0ad11521dbbf405c71e22f54d4db84  appkey  -PbintrayUser=“输入你的用户名”
+//gradlew clean build bintrayUpload -PbintrayUser=“zhangleiwei” -PbintrayKey="a675b1900f0ad11521dbbf405c71e22f54d4db84" -PdryRun=false
+//gradlew clean build bintrayUpload -PbintrayUser=“zhangleiwei” -PbintrayKey="a675b1900f0ad11521dbbf405c71e22f54d4db84" -PdryRun=false
+//publish {
+////    userOrg = 'zhangleiwei'                 //bintray.com用户名
+////    groupId = 'com.example.maventest'             //jcenter上的路径
+////    artifactId = 'maven'        //项目名称
+////    publishVersion = '1.0.0'          //版本号
+////    desc = 'sdk库'
+////    website = 'https://github.com'
+//
+////    repoName = 'maven'           //bintray仓库名
+//    userOrg = 'zhangleiwei'           //bintray注册的用户名
+//    groupId = 'com.example.maven.test'            //compile引用时的第1部分groupId
+//    artifactId = 'MyApplication'       //compile引用时的第2部分项目名
+//    publishVersion = '1.0.0'       //compile引用时的第3部分版本号
+//    desc = 'This is a simple custom tab library for Android'
+//    website = 'https://github.com'
+//
+//}
 
 
 //uploadArchives {
@@ -88,8 +216,8 @@ publish {
 //            pom.groupId = "com.example.maven.test" //包名
 //            pom.artifactId = "meaventest" //SDK 功能，自定义一个即可
 //            pom.version = "0.0.1" //版本号
-//            repository(url: "https://github.com/leiwei-china/maventest.git") {
-//                authentication(userName: "leiwei-china", password: "qi258369142")
+//            repository(url: "https://dl.bintray.com/zhangleiwei/maven") {
+//                authentication(userName: "leiwei", password: "qi258369142")
 //            }
 //        }
 //    }
