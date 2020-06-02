@@ -21,12 +21,12 @@ group = "com.piano" //最终引用形式，如compile 'com.piano.demolib:1.0.0'�
 //apply plugin: 'maven'
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!下面AAR的文件名改成你放到libs文件夹里的文件名
 //def coreAarFile = file('libs/LiteAVSDK_TRTC_6.9.8321.aar')
-def coreAarFile1 = file('libs/AliRTCSdk.aar')
+//def coreAarFile1 = file('libs/AliRTCSdk.aar')
 
-artifacts {
-//    archives coreAarFile
-    archives coreAarFile1
-}
+//artifacts {
+////    archives coreAarFile
+//    archives coreAarFile1
+//}
 
 android {
     compileSdkVersion 29
