@@ -1,0 +1,48 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.3.61'
+    repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven {url 'http://maven.aliyun.com/nexus/content/repositories/releases/'}
+        jcenter(){ url 'http://jcenter.bintray.com/'}
+        jcenter()
+        google()
+        jcenter(){ url 'http://jcenter.bintray.com/'}
+        
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+        maven {url 'http://maven.aliyun.com/nexus/content/repositories/releases/'}
+        jcenter(){ url 'http://jcenter.bintray.com/'}
+        jcenter()
+        mavenCentral()
+        google()
+        maven { url "https://jitpack.io" }
+        maven {
+            url 'https://dl.bintray.com/oschinaapp/maven/'
+        }
+        maven {url 'https://dl.bintray.com/polyv/android'}
+        maven { url 'http://developer.huawei.com/repo' }
+        maven {
+            url "https://raw.githubusercontent.com/leiwei-china/maventest/master"
+//        https://github.com/leiwei-china/maventest.git
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

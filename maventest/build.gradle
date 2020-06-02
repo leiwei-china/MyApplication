@@ -1,0 +1,84 @@
+apply plugin: 'com.android.library'
+
+//tasks.withType(JavaCompile) {
+//    options.encoding = 'UTF-8'
+//}
+//
+apply plugin: 'maven'
+////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!下面AAR的文件名改成你放到libs文件夹里的文件名
+//def coreAarFile = file('libs/LiteAVSDK_TRTC_6.9.8321.aar')
+//def coreAarFile1 = file('libs/AliRTCSdk.aar')
+//
+//artifacts {
+////    archives coreAarFile
+//    archives coreAarFile1
+//}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs' //就是你放aar的目录地址
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+
+    //直播业务功能
+//    api 'com.tencent.livesdk:livesdk:1.1.4'
+//    //核心功能
+////    compile 'com.tencent.ilivesdk:ilivesdk:1.8.5.5'
+////    api 'com.tencent.ilivesdk:ilivesdk:1.8.6'
+//    api 'com.tencent.ilivesdk:ilivesdk:1.9.6'
+//
+//    api (name:'AliRTCSdk',ext:'aar')
+//
+//    api (name:'LiteAVSDK_TRTC_6.9.8321',ext:'aar')
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        def mavenDirPath = file('F:\\mavendir') // 本地存放目录(自行选择)，可放在gradle.properties文件中引用
+        repository(url:"file://${mavenDirPath.absolutePath}") // 必须双引号，单引号不会转义$
+        pom.project {
+            groupId "com.example.maven.test" // 可以随意取，一般取包名
+            artifactId "meaventest" // 可以随意取，一般取库的名字
+            version "1.0.1" // 版本号
+        }
+    }
+}
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            pom.groupId = "com.example.maven.test" //包名
+//            pom.artifactId = "meaventest" //SDK 功能，自定义一个即可
+//            pom.version = "0.0.1" //版本号
+//            repository(url: "https://github.com/leiwei-china/maventest.git") {
+//                authentication(userName: "leiwei-china", password: "qi258369142")
+//            }
+//        }
+//    }
+//}
